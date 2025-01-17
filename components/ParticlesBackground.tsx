@@ -1,11 +1,14 @@
 // components/ParticlesBackground.tsx
-import Particles from 'react-tsparticles';
-import { loadFull } from 'tsparticles';
+
 import { useCallback } from 'react';
+import Particles from 'react-tsparticles';
+// We import the type for engine from tsparticles-engine:
+import { Engine } from 'tsparticles-engine';
+import { loadFull } from 'tsparticles';
 
 export default function ParticlesBackground() {
-  const particlesInit = useCallback(async (engine) => {
-    // This loads the tsparticles package
+  // Type the engine parameter as Engine
+  const particlesInit = useCallback(async (engine: Engine) => {
     await loadFull(engine);
   }, []);
 
@@ -19,36 +22,16 @@ export default function ParticlesBackground() {
         left: 0,
         width: '100%',
         height: '100%',
-        zIndex: 0, 
+        zIndex: 0,
       }}
       options={{
-        background: {
-          // If you'd like a background here, remove it
-          // because we have .bg-animated-gradient behind
-        },
         particles: {
-          number: {
-            value: 60,
-          },
-          color: {
-            value: ["#FFD700", "#FCD34D", "#EAB308"]
-          },
-          shape: {
-            type: 'circle',
-          },
-          opacity: {
-            value: 0.6,
-          },
-          size: {
-            value: 3,
-          },
-          move: {
-            enable: true,
-            speed: 1.5,
-          },
-          line_linked: {
-            enable: false, // If you want connecting lines, set to true
-          },
+          number: { value: 60 },
+          color: { value: "#fcd34d" },
+          shape: { type: "circle" },
+          opacity: { value: 0.6 },
+          size: { value: 3 },
+          move: { enable: true, speed: 1.5 },
         },
       }}
     />

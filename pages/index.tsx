@@ -24,7 +24,7 @@ export default function WelcomePage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-                  <h1 className="text-5xl font-bold">Hello, I'm Christos</h1>
+                  <h1 className="text-5xl font-bold">Hello, I&apos;m Christos</h1>
                  <p className="text-xl">Full-Stack & AI Engineer</p>
         </motion.div>
 
