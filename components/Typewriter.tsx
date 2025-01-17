@@ -19,10 +19,10 @@ const Typewriter: React.FC<{ text: string }> = ({ text }) => {
   }, [index, text]);
 
   return (
-    <div className="typewriter">
+    <h3 className=" font-semibold leading-snug tracking-wide">
       {displayedText}
-      <span className={`cursor ${isTyping ? '' : 'blink'}`}>|</span>
-    </div>
+      <span className={`cursor text-2xl md:text-3xl ${isTyping ? '' : 'blink text-2xl md:text-3xl'}`}>|</span>
+    </h3>
   );
 };
 

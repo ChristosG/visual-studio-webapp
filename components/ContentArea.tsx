@@ -7,6 +7,10 @@ import dynamic from 'next/dynamic';
 const HomeContent = dynamic(() => import('../pageContent/HomeContent'));
 const GitContent = dynamic(() => import('../pageContent/GitContent'));
 const DefaultContent = dynamic(() => import('../pageContent/DefaultContent'));
+const ResumeContent = dynamic(() => import('../pageContent/ResumeContent'));
+const ContactContent = dynamic(() => import('../pageContent/ContactContent'));
+const ProjectContent = dynamic(() => import('../pageContent/ProjectsContent'));
+
 //const ProjectsContent = dynamic(() => import('../pageContent/projects.tsx'));
 
 // Import additional components as needed, e.g.:
@@ -14,13 +18,14 @@ const DefaultContent = dynamic(() => import('../pageContent/DefaultContent'));
 
 interface ContentAreaProps {
   activeFile: string;
+  onOpenFile?: (file: string) => void;  
 }
 
 interface Repo {
   name: string;
 }
 
-const ContentArea: FC<ContentAreaProps> = ({ activeFile }) => {
+const ContentArea: FC<ContentAreaProps> = ({ activeFile, onOpenFile  }) => {
   const [repos, setRepos] = useState<string[]>([]);
 
   useEffect(() => { 
@@ -45,8 +50,11 @@ const ContentArea: FC<ContentAreaProps> = ({ activeFile }) => {
 
   // Mapping of activeFile to corresponding components
   const componentsMap: { [key: string]: JSX.Element } = {
-    'home.jsx': <HomeContent key="home" />,
+    'home.jsx': <HomeContent key="home" onOpenResumeClick={() => onOpenFile?.('resume.html')} />,
     'github': <GitContent repos={repos} key="github" />,
+    'resume.html': <ResumeContent key="resume"  />,
+    'contact.yml': <ContactContent key="contact" />,
+    'projects.py': <ProjectContent key="projects" />,
     //'projects.py' : <ProjectsContent key="projects" />,
     // Add more mappings here as needed, e.g.:
     // 'about.jsx': <AboutContent key="about" />,
@@ -55,6 +63,7 @@ const ContentArea: FC<ContentAreaProps> = ({ activeFile }) => {
   const ActiveComponent = componentsMap[activeFile] || <DefaultContent activeFile={activeFile} key={activeFile} />;
 
   return (
+    
     <AnimatePresence mode="wait">
       {ActiveComponent}
     </AnimatePresence>

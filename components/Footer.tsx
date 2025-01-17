@@ -3,7 +3,7 @@ import { XCircleIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outlin
 
 const Footer = () => {
   return (
-    <div className="bg-[#1E1E1E] text-gray-400 text-xs h-8 flex items-center justify-between px-4 border-t border-gray-700">
+    <div className="bg-[#1E1E1E] w-full text-gray-400 text-xs h-8 flex items-center justify-between px-4 border-t border-gray-700">
       {/* Left Section */}
       <div className="flex items-center space-x-4">
         {/* GitHub Branch Icon with Link */}
