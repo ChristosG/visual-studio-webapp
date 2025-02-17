@@ -4,17 +4,17 @@ import React, { useState, useEffect } from 'react';
 const Typewriter: React.FC<{ text: string }> = ({ text }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [index, setIndex] = useState(0);
-  const [isTyping, setIsTyping] = useState(true); // To control blinking
+  const [isTyping, setIsTyping] = useState(true); 
 
   useEffect(() => {
     if (index < text.length) {
       const timeout = setTimeout(() => {
         setDisplayedText((prev) => prev + text[index]);
         setIndex((prev) => prev + 1);
-      }, 100); // Typing speed
+      }, 100);
       return () => clearTimeout(timeout);
     } else {
-      setIsTyping(false); // Stop typing and allow cursor to blink
+      setIsTyping(false); 
     }
   }, [index, text]);
 

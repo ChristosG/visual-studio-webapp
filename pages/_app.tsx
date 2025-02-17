@@ -1,13 +1,17 @@
 import type { AppProps } from 'next/app';
 import '../styles/globals.css';
 import '../components/Typewriter.css'
-import { AnimatePresence } from 'framer-motion'
+import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return(
-    <AnimatePresence mode="wait">
+    <div >
+          <Head>
+        <title>Christos Grigoriadis</title>
+        <meta name="viewport" content="width=device-width, initial-scale=0.6" />
+      </Head>
       <Component {...pageProps} />;
-    </AnimatePresence>
+    </div>
   )
 }
 

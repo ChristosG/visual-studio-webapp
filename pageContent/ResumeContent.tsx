@@ -1,24 +1,65 @@
 // pageContent/ResumeContent.tsx
-import { FC, useState } from 'react';
+import { FC, useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
+import { Document, Page, pdfjs } from 'react-pdf';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
+import { FaDownload } from 'react-icons/fa';
+
+pdfjs.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.8.69/pdf.worker.min.mjs";
 
 const ResumeContent: FC = () => {
-  // In case you want some additional logic, e.g. controlling page size or toggling preview, etc.
-  const [expanded, setExpanded] = useState(true);
+  const [pdfWidth, setPdfWidth] = useState(0); 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+
+
+  useEffect(() => {
+      const calculateWidth = () => {
+      if (containerRef.current) {
+        let width = containerRef.current.offsetWidth;
+
+        if (window.innerWidth < 768) {
+          width = (window.innerWidth ) * 0.8; 
+
+        }
+        setPdfWidth(width); 
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(entries => {
+      calculateWidth();
+    });
+
+
+    calculateWidth();
+    window.addEventListener('resize', calculateWidth);
+
+
+    if (containerRef.current) {
+      resizeObserver.observe(containerRef.current);
+    }
+
+    return () => {
+       window.removeEventListener('resize', calculateWidth);
+       resizeObserver.disconnect()
+    };
+  }, []);
+
 
   return (
     <motion.div
-      className="relative  bg-animated-gradient flex-1 bg-[#1E1E1E] text-white p-4 md:p-8 flex flex-col"
+      className="flex flex-col h-full items-center p-4 md:p-8 bg-animated-gradient" 
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      <div className="max-w-4xl mx-auto w-full font-inter space-y-8">
-        {/* Heading */}
-        <div className="space-y-4 text-center">
+      <div className="max-w-4xl mx-auto w-full font-inter space-y-8 flex-grow">
+          <div className="flex items-center justify-center space-x-4">
           <motion.h1
-            className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent 
+            className="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent
                        bg-gradient-to-r from-primaryDark to-accent"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -26,75 +67,36 @@ const ResumeContent: FC = () => {
           >
             My Resume
           </motion.h1>
-          {/* <p className="text-gray-300 max-w-xl mx-auto">
-            Below is a quick preview of my PDF resume. Click the button to 
-            download or open it in a new tab.
-          </p> */}
+          <Link href="/resume.pdf" passHref legacyBehavior>
+            <motion.a
+              download="Christos_Grigoriadis_Resume.pdf"
+              className="text-primary hover:text-primaryDark transition-colors duration-300" 
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }} 
+              title="Download Resume"
+            >
+              <FaDownload size={24} /> 
+            </motion.a>
+          </Link>
         </div>
 
-        {/* PDF Preview Area */}
-        <div className="bg-[#2A2A2A] rounded-md p-4 shadow-md">
-          {expanded && (
-            <div className="w-full aspect-[16/9] md:aspect-[4/3] bg-black">
-              {/* Using an iframe or object for PDF embedding */}
-              <iframe
-                src="/resume.pdf"
-                className="w-full h-full"
-                title="Resume Preview"
-              />
-              {/* 
-                Or you could do:
-                <object data="/resume.pdf" type="application/pdf" width="100%" height="100%">
-                  <p>It appears you don't have a PDF plugin. 
-                     <a href="/resume.pdf" target="_blank">Open PDF</a>
-                  </p>
-                </object>
-              */}
+        <div className="bg-[#2A2A2A] rounded-md p-4 shadow-md" ref={containerRef}> 
+          
+            <div className="w-full bg-black overflow-auto">
+              <Document
+                file="/resume.pdf"
+                //onLoadSuccess={onDocumentLoadSuccess}
+                className="w-full h-full flex justify-center items-center"  
+              >
+                <Page
+                  pageNumber={1}
+                  renderAnnotationLayer={false}
+                  renderTextLayer={true}
+                  width={pdfWidth}  
+                />
+              </Document>
             </div>
-          )}
-
-          {/* Toggle preview if you want that feature */}
-          {/* 
-          <button
-            className="mt-3 text-primaryDark underline"
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? 'Hide Preview' : 'Show Preview'}
-          </button>
-          */}
-        </div>
-
-        {/* Buttons */}
-        <div className="flex flex-col md:flex-row gap-4 justify-center">
-          {/* Download Button */}
-          <motion.a
-            href="/resume.pdf"
-            download
-            className="bg-primary text-black px-6 py-3 rounded-full font-semibold shadow-lg
-                       hover:bg-primaryDark focus:outline-none focus:ring-2 
-                       focus:ring-yellow-300 transition-colors duration-300 text-center"
-            whileHover={{ scale: 1.05 , color: '#1E1E1E'}}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            Download Resume
-          </motion.a>
-
-          {/* Open in New Tab */}
-          <motion.a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-transparent text-primaryDark border border-primaryDark px-6 py-3
-                       rounded-full font-semibold shadow-lg hover:bg-primaryDark hover:text-black
-                       focus:outline-none focus:ring-2 focus:ring-yellow-300 
-                       transition-colors duration-300 text-center"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            Open in New Tab
-          </motion.a>
+          
         </div>
       </div>
     </motion.div>

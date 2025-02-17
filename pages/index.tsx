@@ -2,7 +2,6 @@
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import ParticlesBackground from '../components/ParticlesBackground'; 
-// ^-- Adjust path if needed
 
 export default function WelcomePage() {
   const router = useRouter();

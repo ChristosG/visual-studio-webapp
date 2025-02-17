@@ -1,51 +1,48 @@
-// pageContent/ProjectContent.tsx
+// pageContent/ProjectsContent.tsx 
 
 import { FC, useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { projects } from '../data/projectsData'; // Adjust import path
+import { projects } from '../data/projectsData'; 
+import Link from 'next/link';
 
-// AnimatePresence variants for the grid and detail views
+
 const gridVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0 },
-  exit: { opacity: 0, scale: 0.95, y: -20 },
-};
-
-const detailVariants: Variants = {
-  hidden: { opacity: 0, scale: 0.95, y: 20 },
-  visible: { opacity: 1, scale: 1, y: 0 },
-  exit: { opacity: 0, scale: 0.95, y: -20 },
-};
-
-// Sidebar list animation
-const sidebarVariants: Variants = {
-  hidden: { opacity: 0, x: -20 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { staggerChildren: 0.07 },
-  },
-};
-const sidebarItemVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 },
-};
-
-// The main component
+    hidden: { opacity: 0, scale: 0.95, y: 20 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.95, y: -20 },
+  };
+  
+  const detailVariants: Variants = {
+    hidden: { opacity: 0, scale: 0.95, y: 20 },
+    visible: { opacity: 1, scale: 1, y: 0 },
+    exit: { opacity: 0, scale: 0.95, y: -20 },
+  };
+  
+  const sidebarVariants: Variants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { staggerChildren: 0.07 },
+    },
+  };
+  const sidebarItemVariants: Variants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+  };
+  
+  
 const ProjectContent: FC = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'detail'>('grid');
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  // Identify the selected project for the detail view
   const selectedProject = projects.find((p) => p.id === selectedId) || null;
 
-  // Handle click on a project from the grid
   const handleSelectProject = (id: number) => {
     setSelectedId(id);
     setViewMode('detail');
   };
 
-  // Back to grid from the detail view
   const handleBackToGrid = () => {
     setViewMode('grid');
     setSelectedId(null);
@@ -53,7 +50,7 @@ const ProjectContent: FC = () => {
 
   return (
     <motion.div
-      className="relative  bg-animated-gradient flex-1 bg-[#1E1E1E] text-white p-4 md:p-8 flex flex-col"
+      className="flex flex-col h-full p-4 md:p-8 bg-animated-gradient text-white" 
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
@@ -61,97 +58,96 @@ const ProjectContent: FC = () => {
     >
       <AnimatePresence mode="wait">
         {viewMode === 'grid' && (
-          <motion.div
-            key="gridView"
-            variants={gridVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="max-w-5xl mx-auto w-full space-y-8 font-inter"
-          >
-            {/* Heading */}
-            <div className="text-center">
-              <h2
-                className="text-3xl md:text-4xl font-extrabold mb-3
-                           bg-clip-text text-transparent
-                           bg-gradient-to-r from-primaryDark to-accent"
-              >
-                My Projects
-              </h2>
-              <p className="text-gray-300 max-w-xl mx-auto">
-                Here are some of my software & AI projects. Click any to see details.
-              </p>
-            </div>
-
-            {/* Projects Grid */}
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              // If you want a staggered entrance for each card:
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 1 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.1 },
-                },
-              }}
-            >
-              {projects.map((project) => (
-                <motion.div
-                  key={project.id}
-                  className="relative flex flex-col bg-[#2A2A2A] p-6 
-                             rounded-md shadow-lg cursor-pointer 
-                             shadow-md border border-[#3D3D3D]
-                             min-h-[240px]"
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0 },
-                  }}
-                  whileHover={{
-                    rotateY: 4,
-                    boxShadow: '0 8px 24px rgba(255, 215, 0, 0.2)',
-                  }}
-                  whileTap={{ scale: 0.98 }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 220,
-                    damping: 15,
-                  }}
-                  onClick={() => handleSelectProject(project.id)}
-                >
-                  {/* Optional preview image */}
-                  {project.previewImage && (
-                    <div className="mb-3 rounded-md overflow-hidden">
-                      <img
-                        src={project.previewImage}
-                        alt={project.name}
-                        className="w-full h-36 object-cover"
-                      />
-                    </div>
-                  )}
-
-                  <h3 className="text-xl font-bold mb-2 leading-snug">
-                    {project.name}
-                  </h3>
-                  <p className="text-gray-300 flex-grow leading-relaxed">
-                    {project.description}
-                  </p>
-
-                  <span
-                    className="mt-4 inline-block text-primaryDark 
-                               border border-primaryDark px-4 py-2 
-                               rounded-full text-sm font-semibold 
-                               transition-colors duration-300
-                               hover:text-black hover:bg-primaryDark
-                    "
-                  >
-                    View Details
-                  </span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
+             <motion.div
+             key="gridView"
+             variants={gridVariants}
+             initial="hidden"
+             animate="visible"
+             exit="exit"
+             className="max-w-5xl mx-auto w-full space-y-8 font-inter"
+           >
+             {/* Heading */}
+             <div className="text-center">
+               <h2
+                 className="text-3xl md:text-4xl font-extrabold mb-3
+                            bg-clip-text text-transparent
+                            bg-gradient-to-r from-primaryDark to-accent"
+               >
+                 My Projects
+               </h2>
+               <p className="text-gray-300 max-w-xl mx-auto">
+                 Here are some of my software & AI projects. Click any to see details.
+               </p>
+             </div>
+ 
+             {/* Projects Grid */}
+             <motion.div
+               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+               initial="hidden"
+               animate="visible"
+               variants={{
+                 hidden: { opacity: 1 },
+                 visible: {
+                   opacity: 1,
+                   transition: { staggerChildren: 0.1 },
+                 },
+               }}
+             >
+               {projects.map((project) => (
+                 <motion.div
+                   key={project.id}
+                   className="relative flex flex-col bg-[#2A2A2A] p-6 
+                              rounded-md shadow-lg cursor-pointer 
+                              shadow-md border border-[#3D3D3D]
+                              min-h-[240px]"
+                   variants={{
+                     hidden: { opacity: 0, y: 20 },
+                     visible: { opacity: 1, y: 0 },
+                   }}
+                   whileHover={{
+                     rotateY: 4,
+                     boxShadow: '0 8px 24px rgba(255, 215, 0, 0.2)',
+                   }}
+                   whileTap={{ scale: 0.98 }}
+                   transition={{
+                     type: 'spring',
+                     stiffness: 220,
+                     damping: 15,
+                   }}
+                   onClick={() => handleSelectProject(project.id)}
+                 >
+                   {/*  preview image */}
+                   {project.previewImage && (
+                     <div className="mb-3 rounded-md overflow-hidden">
+                       <img
+                         src={project.previewImage}
+                         alt={project.name}
+                         className="w-full h-36 object-cover"
+                       />
+                     </div>
+                   )}
+ 
+                   <h3 className="text-xl font-bold mb-2 leading-snug">
+                     {project.name}
+                   </h3>
+                   <p className="text-gray-300 flex-grow leading-relaxed">
+                     {project.description}
+                   </p>
+ 
+                   <span
+                     className="mt-4 inline-block text-primaryDark 
+                                border border-primaryDark px-4 py-2 
+                                rounded-full text-sm font-semibold 
+                                transition-colors duration-300
+                                hover:text-black hover:bg-primaryDark
+                     "
+                   >
+                     View Details
+                   </span>
+                 </motion.div>
+               ))}
+             </motion.div>
+           </motion.div>
         )}
 
         {viewMode === 'detail' && selectedProject && (
@@ -161,7 +157,7 @@ const ProjectContent: FC = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="flex w-full h-full font-inter"
+            className="flex flex-col md:flex-row w-full h-full font-inter"  
           >
             {/* Sidebar */}
             <motion.div
@@ -170,6 +166,7 @@ const ProjectContent: FC = () => {
               variants={sidebarVariants}
               initial="hidden"
               animate="visible"
+              style={{ maxHeight: '100%' }} 
             >
               <h2 className="text-xl font-bold mb-4 text-center">Projects</h2>
               <div className="flex flex-col gap-3">
@@ -196,9 +193,8 @@ const ProjectContent: FC = () => {
                 ))}
               </div>
             </motion.div>
-
-            {/* Detail area */}
-            <div className="flex-1 bg-[#2A2A2A] rounded-md p-4 relative overflow-auto">
+                        {/* Detail area */}
+                        <div className="flex-1 bg-[#2A2A2A] rounded-md p-4 relative overflow-auto">
               <div className="flex flex-col h-full">
                 {/* Heading */}
                 <h2
@@ -225,23 +221,31 @@ const ProjectContent: FC = () => {
 
                 {/* Link to GitHub */}
                 <div className="mt-auto">
-                  <a
+                  <Link
                     href={selectedProject.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block bg-primary text-black px-6 py-3 
-                               rounded-full font-semibold shadow-lg
-                               hover:bg-primaryDark 
-                               focus:outline-none focus:ring-2 
-                               focus:ring-yellow-300
-                               transition-colors duration-300
-                               mr-4"
+                     passHref
+                    
                   >
-                    View on GitHub
-                  </a>
+                    <motion.a
+                        //target="_blank"
+                        //rel="noopener noreferrer"
+                        className="inline-block bg-primary text-black px-6 py-3 
+                                    rounded-full font-semibold shadow-lg
+                                    hover:bg-primaryDark 
+                                    focus:outline-none focus:ring-2 
+                                    focus:ring-yellow-300
+                                    transition-colors duration-300
+                                    mr-4"
+                                    whileHover={{ scale: 1.05 , color: '#1E1E1E'}}
+                                    whileTap={{ scale: 0.95 }}
+                                    transition={{ type: 'spring', stiffness: 300 }}
+                    >
+                        View on GitHub
+                    </motion.a>
+                </Link>
 
                   {/* Back to Grid Button */}
-                  <button
+                  <motion.button
                     onClick={handleBackToGrid}
                     className="inline-block bg-transparent text-primaryDark
                                border border-primaryDark px-6 py-3 rounded-full 
@@ -249,9 +253,12 @@ const ProjectContent: FC = () => {
                                hover:text-black focus:outline-none focus:ring-2 
                                focus:ring-yellow-300 transition-colors duration-300
                     "
+                    whileHover={{ scale: 1.05 , color: '#1E1E1E'}}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ type: 'spring', stiffness: 300 }}
                   >
                     Back to Grid
-                  </button>
+                    </motion.button>
                 </div>
               </div>
             </div>

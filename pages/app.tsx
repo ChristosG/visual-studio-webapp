@@ -1,18 +1,23 @@
+// pages/app.tsx (Corrected Sticky Layout)
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import TabBar from '../components/TabBar';
 import ContentArea from '../components/ContentArea';
 import Footer from '../components/Footer';
-import { useState } from 'react';
-import { motion } from 'framer-motion'
-
-// import ParticlesBackground from '../components/ParticlesBackground';
-// <div className="relative min-h-screen overflow-hidden bg-animated-gradient">
-//     <ParticlesBackground />
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Index = () => {
   const [openFiles, setOpenFiles] = useState(['home.jsx', 'resume.html', 'projects.py', 'contact.yml']);
   const [activeFile, setActiveFile] = useState('home.jsx');
+  const [screenWidth, setScreenWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleOpenFile = (file: string) => {
     if (!openFiles.includes(file)) {
@@ -23,79 +28,33 @@ const Index = () => {
 
   return (
     <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    animate={{ opacity: 1, y: 0 }}
-    exit={{ opacity: 0, y: -10 }}
-    transition={{ duration: 0.5 }}
-  >
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.5 }}
+      className="flex flex-col min-h-screen bg-vsBackground"
+    >
+      <Navbar screenWidth={screenWidth} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }} />
 
-    <div className="h-screen w-screen flex flex-col">
-      <Navbar />
-      <div className="flex flex-1">
-        <Sidebar activeFile={activeFile} setActiveFile={handleOpenFile} />
-        <div className="flex flex-col flex-1">
-          <TabBar openFiles={openFiles} activeFile={activeFile} setActiveFile={handleOpenFile} />
-          <ContentArea activeFile={activeFile} onOpenFile={handleOpenFile}/>
+      <div className="flex flex-1" style={{ marginTop: '40px' }}>  {/* Adjust 40px based on your Navbar height */}
+        <Sidebar
+          activeFile={activeFile}
+          setActiveFile={handleOpenFile}
+          screenWidth={screenWidth}
+          style={{ position: 'fixed', top: '40px', left: 0, bottom: '32px', zIndex: 40, width: screenWidth < 768 ? '3rem' : '4rem' }}  /*Adjust based on Navbar/Footer heights */
+        />
+
+        <div className="flex flex-col flex-1" style={{ marginLeft: screenWidth < 768 ? '3rem' : '4rem' }}> {/* Adjust based on Sidebar width */}
+          <TabBar openFiles={openFiles} activeFile={activeFile} setActiveFile={handleOpenFile} style={{ position: 'fixed', top: '40px', left: (screenWidth < 768 ? '3rem' : '4rem'), right: 0, zIndex: 30 }} />
+          <div className="flex-1 overflow-y-auto" style={{ marginTop: '32px', marginBottom: '32px' }}> {/* Adjust based on TabBar and Footer heights */}
+              <ContentArea activeFile={activeFile} onOpenFile={handleOpenFile} />
+          </div>
         </div>
       </div>
 
-      <Footer />
-    </div>
-
-
+      <Footer screenWidth={screenWidth} style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50 }} />
     </motion.div>
-
   );
 };
 
 export default Index;
-
-// // pages/index.tsx
-// import { motion } from 'framer-motion';
-// import ParticlesBackground from '../components/ParticlesBackground'; // from earlier snippet
-
-// const containerVariants = {
-//   hidden: { opacity: 0 },
-//   show: {
-//     opacity: 1,
-//     transition: {
-//       staggerChildren: 0.1
-//     }
-//   }
-// };
-
-// const itemVariants = {
-//   hidden: { opacity: 0, y: 20 },
-//   show: { opacity: 1, y: 0 }
-// };
-
-// export default function IndexPage() {
-//   return (
-//     <div className="relative min-h-screen overflow-hidden bg-animated-gradient text-white">
-//       <ParticlesBackground />
-
-//       {/* Page content */}
-//       <motion.div
-//         className="relative z-10 flex items-center justify-center h-screen"
-//         variants={containerVariants}
-//         initial="hidden"
-//         animate="show"
-//       >
-//         <motion.div variants={itemVariants} className="text-center space-y-8">
-//           <h1 className="text-5xl font-bold">Hello, I'm Christos</h1>
-//           <p className="text-xl">Full-Stack & AI Engineer</p>
-//           <motion.button
-//             variants={itemVariants}
-//             className="bg-yellow-500 text-black px-6 py-3 rounded-full font-semibold shadow-lg
-//                        hover:bg-yellow-400 focus:outline-none focus:ring-2 focus:ring-yellow-300
-//                        transition-colors duration-300"
-//             whileHover={{ scale: 1.05 }}
-//             whileTap={{ scale: 0.95 }}
-//           >
-//             View Resume
-//           </motion.button>
-//         </motion.div>
-//       </motion.div>
-//     </div>
-//   );
-// }
