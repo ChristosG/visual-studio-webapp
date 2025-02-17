@@ -46,7 +46,7 @@ const ResumeContent: FC = () => {
 
   return (
     <motion.div
-      className="relative justify-center flex flex-col h-full items-center p-4 md:p-8 bg-animated-gradient" 
+      className="relative justify-center flex flex-col h-full items-center p-4 md:p-8 bg-animated-gradient " 
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
@@ -76,13 +76,13 @@ const ResumeContent: FC = () => {
           </Link>
         </div>
 
-        <div className="bg-[#2A2A2A] rounded-md p-4 shadow-md overflow-hidden md:h-[70dvh]" ref={containerRef}> 
+        <div className="bg-[#2A2A2A] rounded-md p-4 shadow-md overflow-hidden md:h-[70dvh] overflow-y-auto" ref={containerRef}> 
           
             <div className="w-full bg-black overflow-y-auto md:h-full overflow-x-hidden">
               <Document
                 file="/resume.pdf"
                 //onLoadSuccess={onDocumentLoadSuccess}
-                  
+                  className="w-full h-full flex justify-center items-center"
               >
                 <Page
                   pageNumber={1}
