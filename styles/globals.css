@@ -12,6 +12,12 @@ body {
   margin: 0; 
 }
 
+/* @media only screen and (max-width: 600px) {
+   body{
+    overflow-y: hidden;
+  }
+} */
+
 h1, h2, h3, h4, h5, h6 {
   @apply font-bold text-vsForeground;
   margin-top: 0;
@@ -123,4 +129,14 @@ button {
 .hide-scrollbar {
   -ms-overflow-style: none;  
   scrollbar-width: none;  
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }

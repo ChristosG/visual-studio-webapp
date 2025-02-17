@@ -5,13 +5,13 @@ import Head from 'next/head';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return(
-    <div >
+    <>
           <Head>
         <title>Christos Grigoriadis</title>
         <meta name="viewport" content="width=device-width, initial-scale=0.6" />
       </Head>
-      <Component {...pageProps} />;
-    </div>
+      <Component {...pageProps} />
+    </>
   )
 }
 

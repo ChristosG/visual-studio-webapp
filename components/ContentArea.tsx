@@ -55,7 +55,7 @@ const ContentArea: FC<ContentAreaProps> = ({ activeFile, onOpenFile }) => {
 
   };
 
-  const ActiveComponent = componentsMap[activeFile] || <DefaultContent activeFile={activeFile} key={activeFile} />;
+  const ActiveComponent = componentsMap[activeFile] || <DefaultContent activeFile={activeFile} key={activeFile} />
 
   return (
 

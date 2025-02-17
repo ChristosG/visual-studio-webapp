@@ -1,4 +1,4 @@
-// pages/app.tsx (Corrected Sticky Layout)
+// pages/app.tsx 
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import TabBar from '../components/TabBar';
@@ -32,27 +32,23 @@ const Index = () => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col min-h-screen bg-vsBackground"
+      className="flex flex-col  h-[100dvh]"
     >
-      <Navbar screenWidth={screenWidth} style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }} />
+      <Navbar screenWidth={screenWidth} />
 
-      <div className="flex flex-1" style={{ marginTop: '40px' }}>  {/* Adjust 40px based on your Navbar height */}
-        <Sidebar
-          activeFile={activeFile}
-          setActiveFile={handleOpenFile}
-          screenWidth={screenWidth}
-          style={{ position: 'fixed', top: '40px', left: 0, bottom: '32px', zIndex: 40, width: screenWidth < 768 ? '3rem' : '4rem' }}  /*Adjust based on Navbar/Footer heights */
-        />
+      <div className="flex flex-1">
+        <Sidebar activeFile={activeFile} setActiveFile={handleOpenFile} screenWidth={screenWidth} style={{width: '4rem'}}/>
 
-        <div className="flex flex-col flex-1" style={{ marginLeft: screenWidth < 768 ? '3rem' : '4rem' }}> {/* Adjust based on Sidebar width */}
-          <TabBar openFiles={openFiles} activeFile={activeFile} setActiveFile={handleOpenFile} style={{ position: 'fixed', top: '40px', left: (screenWidth < 768 ? '3rem' : '4rem'), right: 0, zIndex: 30 }} />
-          <div className="flex-1 overflow-y-auto" style={{ marginTop: '32px', marginBottom: '32px' }}> {/* Adjust based on TabBar and Footer heights */}
-              <ContentArea activeFile={activeFile} onOpenFile={handleOpenFile} />
+        <div className="flex flex-col flex-1 overflow-x-hidden"> 
+          <TabBar openFiles={openFiles} activeFile={activeFile} setActiveFile={handleOpenFile} />
+            
+          <div className="flex-1 overflow-y-auto overflow-x-auto">
+            <ContentArea activeFile={activeFile} onOpenFile={handleOpenFile} />
           </div>
         </div>
       </div>
 
-      <Footer screenWidth={screenWidth} style={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 50 }} />
+      <Footer screenWidth={screenWidth} />
     </motion.div>
   );
 };
