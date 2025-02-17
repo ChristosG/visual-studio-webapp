@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const Index = () => {
-  const [openFiles, setOpenFiles] = useState(['home.jsx', 'resume.html', 'projects.py', 'contact.yml']);
+  const [openFiles, setOpenFiles] = useState(['home.jsx', 'resume.html', 'github', 'contact.yml']);
   const [activeFile, setActiveFile] = useState('home.jsx');
   const [screenWidth, setScreenWidth] = useState(0);
 

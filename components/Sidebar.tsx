@@ -16,9 +16,10 @@ const Sidebar: FC<SidebarProps> = ({ activeFile, setActiveFile, screenWidth, sty
   const icons = [
     { icon: SiJavascript, file: 'home.jsx', color: '#F7DF1E', tooltip: 'Home', position: 'top' },
     { icon: SiHtml5, file: 'resume.html', color: '#E34F26', tooltip: 'Resume', position: 'top' },
-    { icon: SiPython, file: 'projects.py', color: '#3776AB', tooltip: 'Projects', position: 'top' },
+    { icon: SiGithub, file: 'github', color: 'white', tooltip: 'GitHub', position: 'top' },
     { icon: SiCss3, file: 'contact.yml', color: '#1572B6', tooltip: 'Contact', position: 'top' },
-    { icon: SiGithub, file: 'github', color: 'white', tooltip: 'GitHub', position: 'bottom' },
+    
+    { icon: SiPython, file: 'projects.py', color: '#3776AB', tooltip: 'Projects', position: 'bottom' },
     { icon: SiLinkedin, file: 'linkedin', color: '#3E66BB', tooltip: 'LinkedIn', position: 'bottom', url: 'https://linkedin.com/in/cgrigoriadis' },
   ];
 
