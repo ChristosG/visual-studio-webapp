@@ -11,7 +11,7 @@ const GitContent: FC<GitHubContentProps> = ({ repos }) => {
   const githubProfileUrl = "https://github.com/ChristosG?tab=repositories";
 
   // Define featured projects.  This is an array of repository names.
-  const featuredProjectNames = ["Real-time-transcription-translation", "visual-studio-webapp"];
+  const featuredProjectNames = ["Real-time-transcription-translation", "visual-studio-webapp", "krikri-greek-chatbot" ];
 
   // Separate featured and other projects
   const featuredProjects = repos.filter(repo => featuredProjectNames.includes(repo.name));
